@@ -3,8 +3,58 @@
 	<head>
 		<meta charset= "utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>ASD - Project</title>
+		<title>Eidetify</title>
+		<link rel="stylesheet" href="_css/normalize.css" />
+		<link rel="stylesheet" href="_css/jquery.mobile-1.3.0.min.css" />
+		<link rel="stylesheet" href="_css/main.css" />
 	</head>
 	<body>
+		<div data-role="page" id="home">
+			<div data-role="panel" id="settings" data-position="left">
+				<ul data-role="listview" data-inset="false">
+					<li data-role="list-divider">Notifications</li>
+				</ul>
+			</div>
+			<div data-role="header">
+				<h1><a href="#home" data-transition="slide"><img src="_images/header_logo.png" alt="" /></a></h1>
+				<a href="#settings" data-role="button" data-icon="bars" data-iconpos="notext" data-position="left"></a>
+			</div>
+			<div data-role="content">
+			</div>
+			<div data-role="footer" id="main_footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#add_memory" data-transition="slide">Add Memory</a></li>
+						<li><a href="">Settings</a></li>
+						<li><a href="">View Memories</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div data-role="page" id="add_memory">
+			<div data-role="panel" id="settings" data-position="left">
+				<ul data-role="listview" data-inset="false">
+					<li data-role="list-divider">Notifications</li>
+				</ul>
+			</div>
+			<div data-role="header">
+				<h1><a href="#home" data-transition="slide"><img src="_images/header_logo.png" alt="" /></a></h1>
+				<a href="#settings" data-role="button" data-icon="bars" data-iconpos="notext" data-position="left"></a>
+			</div>
+			<div data-role="content">
+			</div>
+			<div data-role="footer" id="main_footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#add_memory" data-transition="slide" class="ui-btn-active ui-state-persist">Add Memory</a></li>
+						<li><a href="">Settings</a></li>
+						<li><a href="">View Memories</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	<script src="_js/jquery-1.9.js"></script>
+	<script src="_js/jquery.mobile-1.3.0.min.js"></script>
+	<script src="_js/main.js"></script>
 	</body>
 </html>
