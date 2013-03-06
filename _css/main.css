@@ -3,3 +3,13 @@
 * @date March 5, 2013
 * @ASD Project
 */
+
+label {
+	display: block;
+}
+
+#map_container {
+	padding: 25px;
+	background: #eaeaea;
+	border: solid 1px #000;
+}
