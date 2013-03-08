@@ -9,19 +9,19 @@
 		<link rel="stylesheet" href="_css/main.css" />
 	</head>
 	<body>
-		<div data-role="page" id="home">
-			<div data-role="panel" id="settings" data-position="left">
+		<section data-role="page" id="home">
+			<aside data-role="panel" id="settings_home" data-position="left">
 				<ul data-role="listview" data-inset="false">
 					<li data-role="list-divider">Notifications</li>
 				</ul>
-			</div>
-			<div data-role="header">
+			</aside>
+			<header data-role="header">
 				<h1><a href="#home" data-transition="slide"><img src="_images/header_logo.png" alt="" /></a></h1>
-				<a href="#settings" data-role="button" data-icon="bars" data-iconpos="notext" data-position="left"></a>
-			</div>
-			<div data-role="content">
-			</div>
-			<div data-role="footer" id="main_footer" data-position="fixed">
+				<a href="#settings_home" data-role="button" data-icon="bars" data-iconpos="notext" data-position="left"></a>
+			</header>
+			<section data-role="content">
+			</section>
+			<footer data-role="footer" id="main_footer" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
 						<li><a href="#add_memory" data-transition="slide">Add Memory</a></li>
@@ -29,19 +29,19 @@
 						<li><a href="">View Memories</a></li>
 					</ul>
 				</div>
-			</div>
-		</div>
-		<div data-role="page" id="add_memory">
-			<div data-role="panel" id="settings" data-position="left">
+			</footer>
+		</section>
+		<section data-role="page" id="add_memory">
+			<aside data-role="panel" id="settings_add" data-position="left">
 				<ul data-role="listview" data-inset="false">
 					<li data-role="list-divider">Notifications</li>
 				</ul>
-			</div>
-			<div data-role="header">
+			</aside>
+			<header data-role="header">
 				<h1><a href="#home" data-transition="slide"><img src="_images/header_logo.png" alt="" /></a></h1>
-				<a href="#settings" data-role="button" data-icon="bars" data-iconpos="notext" data-position="left"></a>
-			</div>
-			<div data-role="content">
+				<a href="#settings_add" data-role="button" data-icon="bars" data-iconpos="notext" data-position="left"></a>
+			</header>
+			<section data-role="content">
 				<form>
 					<div data-role="fieldcontain">
 						<label for="memory_name">Name Your Memory:</label>
@@ -67,7 +67,7 @@
 					</div>
 					<div data-role="fieldcontain">
 						<label for="memory_photos">Add Your Pics:</label>
-						<input type="file" name-"memory_photos" id="memory_photos" />
+						<input type="file" name="memory_photos" id="memory_photos" />
 					</div>
 					<div data-role="fieldcontain">
                 		<label for="memory_geotag">Want to GeoTag?</label>
@@ -85,8 +85,8 @@
             			<input type="reset" value="Let's Try Again" id="memory_reset" data-theme="c" />
             		</div>
 				</form>
-			</div>
-			<div data-role="footer" id="main_footer" data-position="fixed">
+			</section>
+			<footer data-role="footer" id="main_footer" data-position="fixed">
 				<div data-role="navbar">
 					<ul>
 						<li><a href="#add_memory" data-transition="slide" class="ui-btn-active ui-state-persist">Add Memory</a></li>
@@ -94,8 +94,8 @@
 						<li><a href="">View Memories</a></li>
 					</ul>
 				</div>
-			</div>
-		</div>
+			</footer>
+		</section>
 	<script src="_js/jquery-1.9.js"></script>
 	<script src="_js/jquery.mobile-1.3.0.min.js"></script>
 	<script src="_js/main.js"></script>

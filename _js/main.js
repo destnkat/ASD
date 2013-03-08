@@ -1,8 +1,4 @@
 // JS for ASD
-$(document).on('pageinit', function(){
-	bindFormElements();
-});
-
 var bindFormElements = function() {
 	var $mapContainer = $('#map_container');
 
@@ -18,3 +14,6 @@ var bindFormElements = function() {
 	});
 };
 
+$(document).on('pageinit', function(){
+	bindFormElements();
+});
