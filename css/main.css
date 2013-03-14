@@ -13,3 +13,8 @@ label {
 	background: #eaeaea;
 	border: solid 1px #000;
 }
+
+.asterisk_warning {
+    color: red;
+    font-size: 13px;
+}
