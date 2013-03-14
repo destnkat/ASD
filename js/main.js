@@ -159,7 +159,7 @@ $('#view_memories').on('pageshow', function(){
 
 var prepopulateEditForm = function() {
     var tmpObj;
-    
+
     $.each(currentInventory, function(i, e){
        if (e.memory_id == editKey) {
            tmpObj = e;
@@ -182,6 +182,7 @@ $('#add_memory').on('pageshow', function(e){
 
 $('#add_memory').on('pagehide', function(e){
     $('#memory_submit').off('click', formSubmit);
+    $('#frm_addMemory')[0].reset();
 });
 
 $(document).on('pageinit', function(){
