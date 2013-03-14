@@ -1,0 +1,54 @@
+{
+    "memories": [
+        {
+            "memory_name": "A Wild Time in Tijuana",
+            "memory_id": 1,
+            "memory_theme": "love",
+            "memory_description": "Ac, scelerisque golden dream ut dalwhinnie bailey's irish cream, ligula; libero, sapien mortlach integer",
+            "memory_geotag": "1",
+            "memory_update": "1",
+            "memory_privacy": "2",
+            "memory_date": "2012-05-05"
+        },
+        {
+            "memory_name": "Moonlights in Alaska",
+            "memory_id": 2,
+            "memory_theme": "adventure",
+            "memory_description": "Ac, scelerisque golden dream ut dalwhinnie bailey's irish cream, ligula; libero, sapien mortlach integer",
+            "memory_geotag": "0",
+            "memory_update": "1",
+            "memory_privacy": "3",
+            "memory_date": "2012-05-05"
+        },
+        {
+            "memory_name": "Dreaming at Disney",
+            "memory_id": 3,
+            "memory_theme": "travel",
+            "memory_description": "Ac, scelerisque golden dream ut dalwhinnie bailey's irish cream, ligula; libero, sapien mortlach integer",
+            "memory_geotag": "1",
+            "memory_update": "0",
+            "memory_privacy": "1",
+            "memory_date": "2012-02-15"
+        },
+        {
+            "memory_name": "Roughin it in Melbourne",
+            "memory_id": 4,
+            "memory_theme": "friends",
+            "memory_description": "Ac, scelerisque golden dream ut dalwhinnie bailey's irish cream, ligula; libero, sapien mortlach integer",
+            "memory_geotag": "1",
+            "memory_update": "1",
+            "memory_privacy": "2",
+            "memory_date": "2012-01-20"
+        },
+        {
+            "memory_name": "Getting Loved on in Amsterdam",
+            "memory_id": 5,
+            "memory_theme": "love",
+            "memory_description": "Ac, scelerisque golden dream ut dalwhinnie bailey's irish cream, ligula; libero, sapien mortlach integer",
+            "memory_geotag": "1",
+            "memory_update": "1",
+            "memory_privacy": "3",
+            "memory_date": "2012-01-10"
+        }
+    ]
+}

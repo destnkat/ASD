@@ -1,4 +1,9 @@
 
+/**
+* @todo REFACTOR and abstract some of these methods
+* @author DAniel Beacham
+* @date 2013-03-15
+*/
 // JS for ASD
 var isEdit = false;
 var editKey = null;
@@ -102,7 +107,7 @@ var formSubmit = function (e) {
 
 var retrieveCurrentMemories = function () {
     var template = $('#memories_list_tpl').html();
-    console.log(currentInventory);
+
     if (currentInventory) {
         $('#view_memories section[data-role="content"]').html(Mustache.to_html(template, {
             "memories": currentInventory
@@ -142,6 +147,30 @@ var setEditKey = function (id) {
     isEdit = true;
 };
 
+var loadJSON = function() {
+    var jsonFile = "data/dummy.json";
+
+    $.ajax({
+        url : jsonFile,
+        dataType: 'json',
+        success: function(data) {
+            localStorage.setItem('memories', JSON.stringify(data.memories));
+            getInventory();
+
+        },
+        error : function(e) {
+            console.log(e);
+        }
+    });
+};
+
+var loadYAML = function(e) {
+    YAML.fromURL("data/dummy.yml", function(data) {
+          localStorage.setItem('memories', JSON.stringify(data.memories));
+          getInventory();
+    });
+};
+
 $('#memory').on('pageshow', function () {
     getSelectedMemory();
     $(this).page('destroy').page();
@@ -161,6 +190,9 @@ $('#view_memories').on('pageshow', function () {
     var $curList = $('#current_memories_list');
     $curList.listview();
     $curList.listview('refresh');
+
+    $('#btn_loadJSON').on('click', loadJSON);
+    $('#btn_loadYAML').on('click', loadYAML);
 
     $curList.find('a').on('click', function (e) {
         setCurrentSearchParam($(this).data('memory-id'));
