@@ -1,0 +1,41 @@
+memories:
+  - memory_id: 1
+    memory_name: A night in Tijuana
+    memory_theme: love
+    memory_description: lorum ipsum for real
+    memory_geotag: 1
+    memory_update: 0
+    memory_privacy: 2
+    memory_date: "2012-01-25"
+  - memory_id: 2
+    memory_name: Wishing upon Disneyt stars
+    memory_theme: adventure
+    memory_description: lorum ipsum for real
+    memory_geotag: 0
+    memory_update: 0
+    memory_privacy: 3
+    memory_date: "2012-01-15"
+  - memory_id: 3
+    memory_name: Moonlights in Alaska
+    memory_theme: travel
+    memory_description: lorum ipsum for real
+    memory_geotag: 1
+    memory_update: 1
+    memory_privacy: 1
+    memory_date: "2012-03-07"
+  - memory_id: 4
+    memory_name: Taking in the sites of Paris
+    memory_theme: travel
+    memory_description: lorum ipsum for real
+    memory_geotag: 1
+    memory_update: 0
+    memory_privacy: 1
+    memory_date: "2012-10-06"
+  - memory_id: 5
+    memory_name: Soaking up that South Beach sun!
+    memory_theme: friends
+    memory_description: lorum ipsum for real
+    memory_geotag: 1
+    memory_update: 1
+    memory_privacy: 3
+    memory_date: "2012-08-10"

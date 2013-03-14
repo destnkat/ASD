@@ -1,4 +1,9 @@
 
+/**
+* @todo REFACTOR and abstract some of these methods
+* @author DAniel Beacham
+* @date 2013-03-15
+*/
 // JS for ASD
 var isEdit = false;
 var editKey = null;
@@ -151,11 +156,18 @@ var loadJSON = function() {
         success: function(data) {
             localStorage.setItem('memories', JSON.stringify(data.memories));
             getInventory();
-            console.log(currentInventory);
+
         },
         error : function(e) {
             console.log(e);
         }
+    });
+};
+
+var loadYAML = function(e) {
+    YAML.fromURL("data/dummy.yml", function(data) {
+          localStorage.setItem('memories', JSON.stringify(data.memories));
+          getInventory();
     });
 };
 
@@ -180,6 +192,7 @@ $('#view_memories').on('pageshow', function () {
     $curList.listview('refresh');
 
     $('#btn_loadJSON').on('click', loadJSON);
+    $('#btn_loadYAML').on('click', loadYAML);
 
     $curList.find('a').on('click', function (e) {
         setCurrentSearchParam($(this).data('memory-id'));
