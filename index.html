@@ -118,8 +118,6 @@
 				<a href="#settings_add" data-role="button" data-icon="bars" data-iconpos="notext" data-position="left"></a>
 			</header>
 			<section data-role="content">
-				<button id="btn_loadJSON">Load JSON</button>
-				<button id="btn_loadYAML">Load YAML</button>
 			</section>
 			<footer data-role="footer" id="main_footer" data-position="fixed" data-theme="g">
 				<div data-role="navbar">
@@ -177,19 +175,19 @@
 			<h2>{{memory_name}}</h2>
 			<ul data-role="listview" data-inset="false" id="search_results_list">
 				<li>Created: {{memory_date}}</li>
-				<li>{{memory_description}}</li>
-				<li>{{memory_theme}}</li>
-				<li>{{memory_privacy}}</li>
-				<li>{{memory_update}}</li>
-				<li>{{memory_geotag}}</li>
+				<li>Description: {{memory_description}}</li>
+				<li>Theme: {{memory_theme}}</li>
+				<li>Privacy Level: {{memory_privacy}}</li>
+				<li>Allows Updates: {{memory_update}}</li>
+				<li>Memory Geotagged: {{memory_geotag}}</li>
 			</ul>
-			<a href="#edit" data-role="button" data-memory-id="{{memory_id}}" class="btn_editMemory">Edit Memory</a>
+            <button
+			<button data-memory-id="{{memory_id}}" class="btn_editMemory">Edit Memory</button>
 			<button data-memory-id="{{memory_id}}" class="btn_deleteMemory">Delete Memory</button>
 		</script>
 	<script src="js/jquery-1.9.js"></script>
 	<script src="js/jquery.mobile-1.3.0.min.js"></script>
 	<script src="js/mustache.js"></script>
-	<script src="js/yaml.js"></script>
 	<script src="js/main.js"></script>
 	</body>
 </html>

@@ -4,247 +4,159 @@
 * @author DAniel Beacham
 * @date 2013-03-15
 */
-// JS for ASD
-var isEdit = false;
-var editKey = null;
-var currentSearchId = null;
-var currentInventory;
+var Eidetify = (function(){
+    var currentInventory;
+    var curSelectedMemoryId;
+    var isEdit;
+    var editId;
 
-var bindFormElements = function () {
-    var $mapContainer = $('#map_container');
+    var retrieveCurrentInventory = function() {
+        var url = 'https://dbeacham15.cloudant.com/asd_eidetify/_all_docs?include_docs=true&start_key="memory:id"';
+        $.ajax({
+            url: url,
+            dataType: 'jsonP',
+            success: function(data) {
+                currentInventory = {};
+                currentInventory.memories = [];
 
-    $mapContainer.hide();
+                $.each(data.rows, function(i, v){
+                   var cleanedId = v.id.substring(10, v.id.length);
+                   var tmp = v.doc;
+                   tmp.memory_id = cleanedId;
 
-    $('#memory_geotag').on('change', function (e) {
-        var val = $(this).val();
-        if (val == 1 && $mapContainer.is(':hidden')) {
-            $mapContainer.show();
-        } else {
-            $mapContainer.hide();
-        }
-    });
-};
+                 currentInventory.memories.push(tmp);
+                });
+            }
+        })
+    };
 
-var getInventory = function () {
-    currentInventory = $.parseJSON(localStorage.getItem('memories'));
-};
+    var init = function() {
+        isEdit = false;
+        editId = null;
+        retrieveCurrentInventory();
+    };
 
-var formValidated = function () {
-    var error = false;
+    var displayMemories = function() {
+        var template = $('#memories_list_tpl').html();
+        var toHTML = Mustache.to_html(template, currentInventory);
 
-    $.each($('#frm_addMemory').find('.required'), function (i, e) {
-        var $this = $(this);
+        $('#view_memories').find('section[data-role="content"]').html(toHTML);
+    };
 
-        if ($this.is('input') && $this.val() === '') {
-            error = true;
-            $this.parent('.ui-input-text').css('background-color', 'pink');
-        }
+    var formValidated = function () {
+        var error = false;
 
-        if ($this.is('textarea') && $this.val() === '') {
-            error = true;
-            $this.css('background-color', 'pink');
-        }
+        $.each($('#frm_addMemory').find('.required'), function (i, e) {
+            var $this = $(this);
 
-        if ($this.is('select') && $this.val() == 'null') {
-            error = true;
-            $this.parent('.ui-btn-up-c').css('background-color', 'pink');
-        }
-    });
+            if ($this.is('input') && $this.val() === '') {
+                error = true;
+                $this.parent('.ui-input-text').css('background-color', 'pink');
+            }
 
-    return error;
-};
+            if ($this.is('textarea') && $this.val() === '') {
+                error = true;
+                $this.css('background-color', 'pink');
+            }
 
-var getNewKey = function () {
-    var currentIds = [];
-
-    if (currentInventory) {
-        $.each(currentInventory, function (i, e) {
-            currentIds.push(e.memory_id);
-        });
-
-        return Math.max.apply(Math, currentIds) + 1;
-    }
-
-    return 1;
-};
-
-var formSubmit = function (e) {
-    e.stopPropagation();
-    var memories = $.parseJSON(localStorage.getItem('memories'));
-    if (!memories) {
-        memories = [];
-    }
-
-    var tmpMemories = [];
-
-    if (!formValidated()) {
-        var newObj = {};
-        newObj.memory_id = isEdit ? editKey : getNewKey();
-        newObj.memory_name = $('#memory_name').val();
-        newObj.memory_description = $('#memory_description').val();
-        newObj.memory_theme = $('#memory_theme').val();
-        newObj.memory_date = $('#memory_date').val();
-        newObj.memory_privacy = $('#memory_privacy').val();
-        newObj.memory_update = $('#memory_update').val();
-        newObj.memory_geotag = $('#memory_geotag').val();
-
-        //Strip out existing Memory Ids for Edit
-
-        $.each(memories, function (i, e) {
-            if (e.memory_id != newObj.memory_id) {
-                tmpMemories.push(memories[i]);
+            if ($this.is('select') && $this.val() == 'null') {
+                error = true;
+                $this.parent('.ui-btn-up-c').css('background-color', 'pink');
             }
         });
 
-        tmpMemories.push(newObj);
-        localStorage.setItem('memories', JSON.stringify(tmpMemories));
-        getInventory();
-        $('#frm_addMemory')[0].reset();
-        $.mobile.changePage('#view_memories');
-    }
+        return error;
+    };
 
-};
+    var retrieveSelectedMemory = function() {
+        var selectedMemory = {};
+        var template = $('#single_memory_tpl').html();
 
-var retrieveCurrentMemories = function () {
-    var template = $('#memories_list_tpl').html();
+        $.each(currentInventory.memories, function(i, v){
 
-    if (currentInventory) {
-        $('#view_memories section[data-role="content"]').html(Mustache.to_html(template, {
-            "memories": currentInventory
-        }));
-    }
-};
+           if(v.memory_id == curSelectedMemoryId) {
+               selectedMemory = v;
+               return false;
+           }
+        });
 
-var setCurrentSearchParam = function (id) {
-    currentSearchId = id;
-};
+        var toHTML = Mustache.to_html(template, selectedMemory);
+        $('#memory').find('section[data-role="content"]').html(toHTML);
+    };
 
-var getSelectedMemory = function () {
-    var tpl = $('#single_memory_tpl').html();
-    $.each(currentInventory, function (i, e) {
-        if (e.memory_id == currentSearchId) {
-            $('#memory section[data-role="content"]').html(Mustache.to_html(tpl, e));
+    /**
+     * Handles the Form Submission
+     * @todo CRUD ADD/EDIT to Cloudant
+     */
+    var validateAndSubmit = function() {
+        if (!formValidated()) {
         }
-    });
-};
+    };
 
-var deleteMemory = function (id) {
-    var tmp = [];
+    var bindForm = function() {
+        $('#memory_submit').on('click', validateAndSubmit);
+    };
 
-    $.each(currentInventory, function (i, e) {
-        if (e.memory_id != id) {
-            tmp.push(e);
-        }
-    });
+    var setSearchParameter = function(id) {
+        curSelectedMemoryId = id;
+    };
 
-    localStorage.setItem('memories', JSON.stringify(tmp));
-    getInventory();
-    $.mobile.changePage('#view_memories');
-};
-
-var setEditKey = function (id) {
-    editKey = id;
-    isEdit = true;
-};
-
-var loadJSON = function() {
-    var jsonFile = "data/dummy.json";
-
-    $.ajax({
-        url : jsonFile,
-        dataType: 'json',
-        success: function(data) {
-            localStorage.setItem('memories', JSON.stringify(data.memories));
-            getInventory();
-
-        },
-        error : function(e) {
-            console.log(e);
-        }
-    });
-};
-
-var loadYAML = function(e) {
-    YAML.fromURL("data/dummy.yml", function(data) {
-          localStorage.setItem('memories', JSON.stringify(data.memories));
-          getInventory();
-    });
-};
-
-$('#memory').on('pageshow', function () {
-    getSelectedMemory();
-    $(this).page('destroy').page();
-
-    $('.btn_deleteMemory').on('click', function (e) {
-        deleteMemory($(this).data('memory-id'));
-    });
-
-    $('.btn_editMemory').on('click', function (e) {
-        setEditKey($(this).data('memory-id'));
+    var editTheMemory = function(id) {
+        isEdit = true;
+        editId = id;
         $.mobile.changePage('#add_memory');
+    };
+
+    /**
+     * @param id
+     * @todo CRUD Delete Function with Cloudant
+     */
+    var deleteTheMemory = function(id) {
+
+    };
+
+    return {
+        init: init,
+        displayMemories: displayMemories,
+        bindForm: bindForm,
+        setSearchParameter: setSearchParameter,
+        retrieveSelectedMemory: retrieveSelectedMemory,
+        editTheMemory: editTheMemory,
+        deleteTheMemory: deleteTheMemory
+    };
+})();
+
+
+$('#memory').on('pageshow', function(){
+    Eidetify.retrieveSelectedMemory();
+
+    $('.btn_editMemory').on('click', function(e){
+        Eidetify.editTheMemory($(this).data('memory-id'));
     });
+
+    $('.btn_deleteMemory').on('click', function(e){
+        Eidetify.deleteTheMemory($(this).data('memory-id'));
+    });
+
+    $(this).trigger('pagecreate');
 });
 
 $('#view_memories').on('pageshow', function () {
-    retrieveCurrentMemories();
-    var $curList = $('#current_memories_list');
-    $curList.listview();
-    $curList.listview('refresh');
+    Eidetify.displayMemories();
 
-    $('#btn_loadJSON').on('click', loadJSON);
-    $('#btn_loadYAML').on('click', loadYAML);
-
-    $curList.find('a').on('click', function (e) {
-        setCurrentSearchParam($(this).data('memory-id'));
-    });
-});
-
-var addSelectedAttribute = function (value, select) {
-    var opt = select.find('option[value="' + value + '"]');
-    if (opt) {
-        opt.prop('selected', 'selected');
-    }
-
-    select.selectmenu('refresh');
-};
-
-var prepopulateEditForm = function () {
-    var tmpObj;
-
-    $.each(currentInventory, function (i, e) {
-        if (e.memory_id == editKey) {
-            tmpObj = e;
-            return false;
-        }
+    var $curUL = $('#current_memories_list');
+    $curUL.find('a').on('click', function(e){
+        Eidetify.setSearchParameter($(this).data('memory-id'));
     });
 
-    $('#memory_name').val(tmpObj.memory_name);
-    $('#memory_date').val(tmpObj.memory_date);
-    $('#memory_description').val(tmpObj.memory_description);
-    $('#memory_privacy').val(tmpObj.memory_privacy).slider('refresh');
-    $('#memory_geotag').val(tmpObj.memory_geotag).slider('refresh');
-    $('#memory_update').val(tmpObj.memory_update).slider('refresh');
-    addSelectedAttribute(tmpObj.memory_theme, $('#memory_theme'));
-
-    $('#memory_submit').val('Edit Memory').button('refresh');
-};
-
-
-$('#add_memory').on('pageshow', function (e) {
-    $('#memory_submit').on('click', formSubmit);
-    if (isEdit) {
-        prepopulateEditForm();
-    }
+    $curUL.listview();
+    $curUL.listview('refresh');
 });
 
-$('#add_memory').on('pagehide', function (e) {
-    $('#memory_submit').off('click', formSubmit);
-    $('#frm_addMemory')[0].reset();
-    isEdit = false;
-    $('#memory_submit').val('Add Memory').button('refresh');
+$('#add_memories').on('pageshow', function() {
+    Eidetify.bindForm();
 });
 
-$(document).on('pageinit', function () {
-    bindFormElements();
-    getInventory();
+$(document).on('pageinit', function(){
+    Eidetify.init();
 });
