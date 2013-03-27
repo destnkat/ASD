@@ -114,6 +114,7 @@ var Eidetify = (function(){
                 success: function(data) {
                     alert("Successfully Saved");
                     retrieveCurrentInventory();
+                    $('#memory_reset').trigger('click');
                     $.mobile.changePage('#view_memories');
                 },
                 error: function(status) {
