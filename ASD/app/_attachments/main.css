@@ -1,0 +1,24 @@
+/**
+* @author Daniel Beacham
+* @date March 5, 2013
+* @ASD Project
+*/
+
+label {
+    display: block;
+}
+
+#map_container {
+    padding: 25px;
+    background: #eaeaea;
+    border: solid 1px #000;
+}
+
+.asterisk_warning {
+    color: red;
+    font-size: 13px;
+}
+
+#home .ui-content {
+    padding: 0;
+}
