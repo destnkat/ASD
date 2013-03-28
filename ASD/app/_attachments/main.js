@@ -7,11 +7,15 @@
 var Eidetify = (function(){
     var currentInventory;
     var curSelectedMemoryId;
-    var isEdit;
-    var editId;
+    var isEdit = false;
+    var editId = null;
     var $db;
 
     var retrieveCurrentInventory = function() {
+        isEdit = false;
+        editId = null;
+        $('#memory_edit').val('false');
+
         $db.view('eidetify/memories', {
             success: function(data) {
                 currentInventory = {};
@@ -25,8 +29,6 @@ var Eidetify = (function(){
     };
 
     var init = function() {
-        isEdit = false;
-        editId = null;
         $db = $.couch.db("asd_eidetify");
 
         retrieveCurrentInventory();
@@ -41,23 +43,24 @@ var Eidetify = (function(){
 
     var formValidated = function () {
         var error = false; 
+        $('#frm_addMemory').find('.error').removeClass('error');
 
         $.each($('#frm_addMemory').find('.required'), function (i, e) {
             var $this = $(this);
 
             if ($this.is('input') && $this.val() === '') {
                 error = true;
-                $this.parent('.ui-input-text').css('background-color', 'pink');
+                $this.parent('.ui-input-text').addClass('error');
             }
 
             if ($this.is('textarea') && $this.val() === '') {
                 error = true;
-                $this.css('background-color', 'pink');
+                $this.addClass('error');
             }
 
             if ($this.is('select') && $this.val() == 'null') {
                 error = true;
-                $this.parent('.ui-btn-up-c').css('background-color', 'pink');
+                $this.parent('.ui-btn-up-g').addClass('error');
             }
         });
      
@@ -79,7 +82,13 @@ var Eidetify = (function(){
         $('#memory').find('section[data-role="content"]').html(toHTML);
     };
 
-    var getNewID = function() {
+    var getNewID = function(editObj) {
+        
+        if(editObj.val() == 'true') {
+            
+            return editObj.data('editId').substr(10);
+        }
+
         var id = 0;
 
         $.each(currentInventory.memories, function(i, v){
@@ -92,13 +101,12 @@ var Eidetify = (function(){
         return ++id;
     };
 
-    /**
-     * Handles the Form Submission
-     * @todo CRUD ADD/EDIT to Cloudant
-     */
-    var validateAndSubmit = function() {
+    var validateAndSubmit = function(e) {
+        e.stopPropagation();
+        $('#memory_submit').off('click', validateAndSubmit);
+
         if (!formValidated()) {
-            var id = getNewID();
+            var id = getNewID($('#memory_edit'));
             var json = {
                 _id: 'memory:id:' + id,
                 memory_name: $('#memory_name').val(),
@@ -109,6 +117,10 @@ var Eidetify = (function(){
                 memory_privacy: $('#memory_privacy').val(),
                 memory_date: $('#memory_date').val()
             };
+
+            if($('#memory_edit').val() == 'true') {
+                json._rev = $('#memory_edit').data('memory_rev');
+            }
 
             $db.saveDoc(json, {
                 success: function(data) {
@@ -159,6 +171,38 @@ var Eidetify = (function(){
         });
     };
 
+    var populateTheEditableForm = function(obj) { 
+        $('#memory_name').val(obj.memory_name);
+        $('#memory_description').val(obj.memory_description);
+        $('#memory_date').val(obj.memory_date);
+        $('#memory_privacy').val(obj.memory_privacy).slider('refresh');
+        $('#memory_update').val(obj.memory_update).slider('refresh');
+        $('#memory_geotag').val(obj.memory_geotag).slider('refresh');
+        $('#memory_edit').val(true).data('editId', obj._id).data('memory_rev', obj._rev);
+        var opt = $('#memory_theme').find('option[value="' + obj.memory_theme + '"]' );
+        
+        if(opt) {
+            opt.prop('selected', 'selected');
+        }
+
+        $('#memory_theme').selectmenu('refresh');
+    };
+
+    var populateIfEdit = function() {
+        if(isEdit) {
+            $db.openDoc(editId, {
+                success: function(data) {
+                    populateTheEditableForm(data);
+                },
+                error: function(status) {
+                    console.log('ERROR Edit Function: ' + status);
+                }
+            })
+        } 
+
+        return this;
+    };
+
     return {
         init: init,
         displayMemories: displayMemories,
@@ -166,7 +210,8 @@ var Eidetify = (function(){
         setSearchParameter: setSearchParameter,
         retrieveSelectedMemory: retrieveSelectedMemory,
         editTheMemory: editTheMemory,
-        deleteTheMemory: deleteTheMemory
+        deleteTheMemory: deleteTheMemory,
+        populateIfEdit: populateIfEdit
     };
 })();
 
@@ -201,7 +246,10 @@ $('#view_memories').on('pageshow', function () {
 });
 
 $('#add_memory').on('pageshow', function() {
+    Eidetify.populateIfEdit();
     Eidetify.bindForm();
+    
+
 });
 
 $(document).on('pageinit', function(){

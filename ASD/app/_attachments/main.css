@@ -22,3 +22,13 @@ label {
 #home .ui-content {
     padding: 0;
 }
+
+textarea.error,
+.ui-btn-up-g.error,
+.ui-input-text.error {
+	background: pink;
+}
+
+#search_results_list {
+	margin: 15px -15px;
+}

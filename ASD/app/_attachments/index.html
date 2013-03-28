@@ -53,8 +53,8 @@
                         <textarea name="memory_description" id="memory_description" class="required"></textarea>
                     </div>
 					<div data-role="fieldcontain">
-						<label for="memory_date">Memory Date:</label>
-						<input type="date" name="memory_date" id="memory_date" />
+						<label for="memory_date"><strong>Memory Date:</strong></label>
+						<input type="date" name="memory_date" id="memory_date" class="required"/>
 					</div>
 					<div data-role="fieldcontain">
 						<label for="memory_privacy">Privacy Level:</label>
@@ -76,6 +76,7 @@
             		</div>
             		<div data-role="fieldcontain">
                         <p class="asterisk_warning">All Bolded Fields are Required</p>
+                        <input type="hidden" name="memory_edit" id="memory_edit" value="false" />
             			<input type="button" value="Add Memory" id="memory_submit" data-theme="a" />
             			<input type="reset" value="Let's Try Again" id="memory_reset" data-theme="c" />
             		</div>
@@ -155,7 +156,7 @@
 				<li>Memory Geotagged: {{geotag}}</li>
 			</ul>
             <button
-			<button data-memory-id="{{id}}" class="btn_editMemory">Edit Memory</button>
+			<button data-memory-id="{{id}}" class="btn_editMemory" data-theme="g">Edit Memory</button>
 			<button data-memory-id="{{id}}" data-memory-rev="{{rev}}" class="btn_deleteMemory">Delete Memory</button>
 		</script>
 	<script src="jquery-1.9.js"></script>
