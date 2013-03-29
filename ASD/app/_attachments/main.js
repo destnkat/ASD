@@ -169,6 +169,8 @@ var Eidetify = (function(){
                 console.log(status);
             }
         });
+
+        $('#delete_confirmation').off('click');
     };
 
     var populateTheEditableForm = function(obj) { 
@@ -197,7 +199,7 @@ var Eidetify = (function(){
                 error: function(status) {
                     console.log('ERROR Edit Function: ' + status);
                 }
-            })
+            });
         } 
 
         return this;
@@ -227,7 +229,10 @@ $('#memory').on('pageshow', function(){
         var $self = $(this);
         var memoryId = $self.data('memory-id');
         var revId = $self.data('memory-rev');
-        Eidetify.deleteTheMemory(memoryId, revId);
+
+        $('#delete_confirmation').on('click', function(){
+            Eidetify.deleteTheMemory(memoryId, revId);
+        });
     });
 
     $(this).trigger('pagecreate');

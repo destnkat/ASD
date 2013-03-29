@@ -126,6 +126,16 @@
 				</div>
 			</footer>
 		</section>
+		<section data-role="page" id="deleteConfirmation">
+			<header data-role="header">
+				<h1>Delete Document?</h1>
+			</header>
+			<section data-role="content">
+				<p>Are you sure you would like to delete this document?</p>
+				<button id="delete_confirmation">Yup.. Sure Am</button>
+				<a href="#" data-rel="back" data-role="button">Nahhhh....</a>
+			</section>
+		</section>
 		<script type="text/html" id="memories_list_tpl">
 			<div data-role="collapsible">
 				<ul data-role="listview" data-inset="false" id="current_memories_list">
@@ -155,9 +165,8 @@
 				<li>Allows Updates: {{update}}</li>
 				<li>Memory Geotagged: {{geotag}}</li>
 			</ul>
-            <button
 			<button data-memory-id="{{id}}" class="btn_editMemory" data-theme="g">Edit Memory</button>
-			<button data-memory-id="{{id}}" data-memory-rev="{{rev}}" class="btn_deleteMemory">Delete Memory</button>
+			<a href="#deleteConfirmation" data-memory-id="{{id}}" data-memory-rev="{{rev}}" data-rel="dialog" data-role="button" class="btn_deleteMemory">Delete Memory</a>
 		</script>
 	<script src="jquery-1.9.js"></script>
 	<script src="jquery.mobile-1.3.0.min.js"></script>
